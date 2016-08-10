@@ -1,0 +1,22 @@
+{
+  "version": "1.0.0",
+  "userSecretsId": "HigherKnowledge.ReferenceDataService",
+
+  "dependencies": {
+    "HigherKnowledge.Common": "1.0.0",
+    "iTextSharp" : "5.5.9",
+    "FreeSpire.Doc" : "5.5.0"
+  },
+
+  "frameworks": {
+    "net451": {}
+  },
+
+  "buildOptions": {
+    "emitEntryPoint": true
+  },
+
+  "publishOptions": {
+    "include": [ "appsettings.json" ]
+  }
+}

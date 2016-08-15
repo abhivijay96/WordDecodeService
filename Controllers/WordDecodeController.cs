@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using HigherKnowledge.WordDecodeService.Models;
 using Swashbuckle.SwaggerGen.Annotations;
 using Newtonsoft.Json;
@@ -7,6 +7,7 @@ using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
 using Spire.Doc.Documents;
 using Spire.Doc;
+using System.Text;
 
 namespace HigherKnowledge.ReferenceService.Controllers
 {
@@ -22,13 +23,15 @@ namespace HigherKnowledge.ReferenceService.Controllers
             ResultData d = new ResultData();
             if(!String.IsNullOrEmpty(l.data))
             {
-                 Byte[] bytes = Convert.FromBase64String(l.data);
+                StringBuilder temp = new StringBuilder();
+                Byte[] bytes = Convert.FromBase64String(l.data);
                 PdfReader reader = new PdfReader(bytes);
                 int number = reader.NumberOfPages;           
                 for(int i = 1; i<= number;i++)
                 {
-                    d.data += PdfTextExtractor.GetTextFromPage(reader,i);
+                    temp.Append(PdfTextExtractor.GetTextFromPage(reader,i));
                 }
+                d.data = temp.ToString();
             }
             return JsonConvert.SerializeObject(d);
         }
@@ -42,15 +45,17 @@ namespace HigherKnowledge.ReferenceService.Controllers
             if(!String.IsNullOrEmpty(l.data))
             {
                  Byte[] bytes = Convert.FromBase64String(l.data);
+                 StringBuilder temp = new StringBuilder();
                  System.IO.Stream stream = new System.IO.MemoryStream(bytes);
                  Document doc = new Document(stream);
                  foreach(Section s in doc.Sections)
                  {
                      foreach(Paragraph p in s.Paragraphs)
                      {
-                         d.data += p.Text+"\n";
+                         temp.Append(p.Text);
                      }
                  }
+                 d.data = temp.ToString();
             }
             return JsonConvert.SerializeObject(d);
         }

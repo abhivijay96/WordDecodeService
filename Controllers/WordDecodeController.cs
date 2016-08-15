@@ -20,7 +20,7 @@ namespace HigherKnowledge.ReferenceService.Controllers
         public string Decode([FromBodyAttribute] WordDecodeData l)
         {
             ResultData d = new ResultData();
-            if(String.IsNullOrEmpty(l.data))
+            if(!String.IsNullOrEmpty(l.data))
             {
                  Byte[] bytes = Convert.FromBase64String(l.data);
                 PdfReader reader = new PdfReader(bytes);
